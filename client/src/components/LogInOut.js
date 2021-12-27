@@ -21,8 +21,8 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: "70%",
   bgcolor: "background.paper",
-  border: "1px solid #732065",
-  boxShadow: 24,
+  border: "4px solid #732065",
+  boxShadow: 10,
   p: 4,
 };
 
@@ -79,10 +79,11 @@ export const LogInOut = () => {
 
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
-          <h1>Sign In</h1>
+          <span onClick={handleClose} style={{color: "#732065", marginTop: "-10px", float: "right", cursor: "pointer"}}><b>X</b></span>
+          <h1 className="modalHeader">Sign In</h1>
           <SignIn close={handleClose}/>
-
-          <h1>Or create an account:</h1>
+<br />
+          <h1 className="modalHeader">Or create an account:</h1>
           <SignUp close={handleClose}/>
         </Box>
       </Modal>

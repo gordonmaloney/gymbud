@@ -18,10 +18,10 @@ export const Main = () => {
           <Route exact path="/signedin">
             <GymBud />
           </Route>
+         
+          <Route path="/:userId/exercise/:exerciseId" component={Exercise}  />
 
-          <Route path="/exercise">
-            <Exercise />
-          </Route>
+         
         </Switch>
         <Footer />
       </BrowserRouter>

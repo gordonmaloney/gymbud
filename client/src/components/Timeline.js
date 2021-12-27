@@ -1,15 +1,39 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { Grid } from "@mui/material";
 import AdjustRoundedIcon from "@mui/icons-material/AdjustRounded";
 import MilitaryTechRoundedIcon from "@mui/icons-material/MilitaryTechRounded";
 import UndoRoundedIcon from "@mui/icons-material/UndoRounded";
 import { Link } from "react-router-dom";
 import $ from 'jquery'
-
+import { getUser } from "../actions/auth";
+import { useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { getUsers } from "../actions/auth";
 
 export const Timeline = () => {
+const dispatch = useDispatch()
+const location = useLocation()
 
-  const user = JSON.parse(localStorage.getItem("profile"));
+
+useEffect(() => {
+  dispatch(getUsers());
+}, [location]);
+
+const users = useSelector((state) => state.auth);
+const localUser = JSON.parse(localStorage.getItem("profile"));
+
+const [user, setUser] = useState('')
+
+useEffect(() => {
+  localUser && localUser?.result && users.length > 0 &&
+  setUser(users.filter(filteredUser => filteredUser._id == localUser?.result?._id )[0])
+
+  if (!localUser) setUser('')
+}, [users, location])
+
+
+
+  //const user = JSON.parse(localStorage.getItem("profile"));
 
 setTimeout(function(){
   $('.preload').removeClass('preload');
@@ -83,40 +107,30 @@ setTimeout(function(){
       <center>
         <div style={{ height: "150px" }} />
 
-        
+      
 
-<Link to='/exercise'>
-        <TimelineBox 
-        name="deadlift" target="240" last="180" best="200" />
-</Link>
-
-{console.log(user?.result)}
-
-{user && user.result.exercises && user.result.exercises.length >= 0 &&
-user.result.exercises.map(exercise => 
+{user && user.exercises && user.exercises.length >= 0 &&
+user.exercises.map(exercise => 
   {
     let total = []
     exercise.history.map(history => total.push(parseInt(history.weight) || 0))
     let best = parseInt(Math.max.apply(null, total))
   return (
-  <TimelineBox name={exercise.exercise} target={exercise.target} last={exercise.history[exercise.history.length-1].weight}
+    <Link to={`${user._id}/exercise/${exercise._id}`}>
+  <TimelineBox 
+
+  name={exercise.exercise}
+  target={exercise.target}
+  last={exercise?.history[exercise.history.length-1]?.weight}
   best={best} 
+  
   />
+  </Link>
   )
   }
 )}
 
-        <TimelineBox name="squat" target="150" last="130" best="140" />
-
-        <TimelineBox name="benchpress" target="120" last="90" best="110" />
-
-        <TimelineBox name="db press" target="100" last="94" best="100" />
-
-
-        <TimelineBox name="lunge" target="100" last="94" best="100" />
-        <TimelineBox name="shoulder press " target="100" last="94" best="100" />
-        <TimelineBox name="burpies" target="100" last="94" best="100" />
-
+{!user && <h1 className="modalHeader">Log in or create an account to get started.</h1>}
         <div style={{ height: "150px" }} />
 
       </center>

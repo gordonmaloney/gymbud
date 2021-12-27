@@ -1,5 +1,5 @@
 import * as api from "../api";
-import { AUTH, FETCH, UPDATE } from "./ActionTypes";
+import { AUTH, FETCH, UPDATE, NEWAUTH } from "./ActionTypes";
 
 export const signin = (formData, history) => async (dispatch) => {
   try {
@@ -41,25 +41,30 @@ export const getUsers = () => async (dispatch) => {
 
 export const getUser = (id) => async (dispatch) => {
   try {
+    console.log("test")
+
+    console.log(id)
     const { data } = await api.getUser(id);
 
-    dispatch({ type: FETCH, payload: data });
+    dispatch({ type: NEWAUTH, data });
 
-    console.log("test")
   } catch (error) {
     console.log(error);
   }
 }
 
 
-export const AddExercise = (id, entry) => async (dispatch) => {
+export const AddExercise = (id, entry, history) => async (dispatch) => {
   try {
     console.log(id, entry)
 
     const { data } = await api.AddExercise(id, entry);
 
-    console.log(data)
+    console.log("data", data)
+
     dispatch({ type: UPDATE, payload: data });
+
+    history.push('../')
   } catch (error) {
     console.log(error);
   }

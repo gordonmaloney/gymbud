@@ -98,3 +98,28 @@ p {
 a {
   text-decoration: none;
 }
+
+.modalHeader {
+  color: #732065 !important;
+  font-weight: normal;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.customBtn {
+  width: 80%;
+  background-color: #732065;
+  padding: 10px;
+  text-align: center;
+  margin: 8px;
+  color: white;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+  box-shadow: 8px 8px 0px rgba(35, 53, 89, 0.8);
+}
+
+.customBtn:hover {
+  background-color: #8b387e;
+  color: white;
+}

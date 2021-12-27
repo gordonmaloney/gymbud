@@ -20,26 +20,31 @@ export const SignUp = ({close}) => {
     <div>
       <TextField
       fullWidth
-        placeholder="email"
+      margin="dense"
+        placeholder="Email"
         type="text"
         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
       />
       <TextField
       fullWidth
-        placeholder="password"
+      margin="dense"
+
+        placeholder="Password"
         type="password"
         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
       />
       <TextField
       fullWidth
-        placeholder="confirm password"
+      margin="dense"
+
+        placeholder="Confirm password"
         type="confirmPassword"
         onChange={(e) =>
           setFormData({ ...formData, confirmPassword: e.target.value })
         }
       />
 
-      <Button fullWidth onClick={handleSubmit}>Sign Up</Button>
+      <div className="customBtn"  onClick={handleSubmit}>Sign Up</div>
     </div>
   );
 };
