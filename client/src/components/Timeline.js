@@ -9,6 +9,8 @@ import $ from 'jquery'
 
 export const Timeline = () => {
 
+  const user = JSON.parse(localStorage.getItem("profile"));
+
 setTimeout(function(){
   $('.preload').removeClass('preload');
 }, 500)
@@ -87,6 +89,22 @@ setTimeout(function(){
         <TimelineBox 
         name="deadlift" target="240" last="180" best="200" />
 </Link>
+
+{console.log(user?.result)}
+
+{user && user.result.exercises && user.result.exercises.length >= 0 &&
+user.result.exercises.map(exercise => 
+  {
+    let total = []
+    exercise.history.map(history => total.push(parseInt(history.weight) || 0))
+    let best = parseInt(Math.max.apply(null, total))
+  return (
+  <TimelineBox name={exercise.exercise} target={exercise.target} last={exercise.history[exercise.history.length-1].weight}
+  best={best} 
+  />
+  )
+  }
+)}
 
         <TimelineBox name="squat" target="150" last="130" best="140" />
 

@@ -16,7 +16,7 @@ export const signUp = (formData) => API.post('/users/signup', formData)
 
 export const getUsers = () => API.get('/users')
 
-//not working
+//not working vvv, works on postman
 export const getUser = (id) => API.post('/users/:id')
 
 export const AddExercise = (id, entry) => API.post(`/users/${id}`, entry)

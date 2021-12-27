@@ -4,7 +4,9 @@ import { useHistory } from "react-router";
 
 import { signin } from '../../actions/auth';
 
-export const SignIn = () => {
+import { TextField, Button } from "@mui/material";
+
+export const SignIn = ({close}) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(null);
@@ -12,22 +14,26 @@ export const SignIn = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(signin(formData, history));
+    history.push('../')
+    close()
   };
 
   return (
     <div>
-      <input
+      <TextField
+      fullWidth
         placeholder="email"
         type="text"
         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
       />
-      <input
+      <TextField
+      fullWidth
         placeholder="password"
         type="password"
         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
       />
 
-      <button onClick={handleSubmit}>Sign In</button>
+      <Button fullWidth onClick={handleSubmit}>Sign In</Button>
     </div>
   );
 };

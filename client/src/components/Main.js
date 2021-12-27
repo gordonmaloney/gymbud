@@ -15,6 +15,9 @@ export const Main = () => {
           <Route exact path="/">
             <GymBud />
           </Route>
+          <Route exact path="/signedin">
+            <GymBud />
+          </Route>
 
           <Route path="/exercise">
             <Exercise />

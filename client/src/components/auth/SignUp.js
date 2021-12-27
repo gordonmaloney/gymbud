@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
+import { TextField, Button } from "@mui/material";
 
 import { signup } from "../../actions/auth";
 
-export const SignUp = () => {
+export const SignUp = ({close}) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(null);
@@ -12,21 +13,25 @@ export const SignUp = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(signup(formData, history));
+    close()
   };
 
   return (
     <div>
-      <input
+      <TextField
+      fullWidth
         placeholder="email"
         type="text"
         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
       />
-      <input
+      <TextField
+      fullWidth
         placeholder="password"
         type="password"
         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
       />
-      <input
+      <TextField
+      fullWidth
         placeholder="confirm password"
         type="confirmPassword"
         onChange={(e) =>
@@ -34,7 +39,7 @@ export const SignUp = () => {
         }
       />
 
-      <button onClick={handleSubmit}>Sign Up</button>
+      <Button fullWidth onClick={handleSubmit}>Sign Up</Button>
     </div>
   );
 };
