@@ -1,7 +1,12 @@
-import { AUTH, LOGOUT } from "../actions/ActionTypes";
+import { FETCH, AUTH, LOGOUT } from "../actions/ActionTypes";
 
 const authReducer = (state = { authData: null }, action) => {
   switch (action.type) {
+    
+    case FETCH:
+      return action.payload;
+      break;
+
     case AUTH:
       localStorage.setItem('profile', JSON.stringify({...action?.data}));
 

@@ -132,6 +132,8 @@ export const UpdateExercise = async (req, res) => {
     const Entry = req.body;
 
 
+    console.log(Entry)
+    
     if (!mongoose.Types.ObjectId.isValid(_id))
     return res.status(404).send("No post with that ID");
 
