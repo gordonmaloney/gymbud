@@ -73,6 +73,7 @@ export const AddExercise = (id, entry, history) => async (dispatch) => {
 
 export const AddTarget = (id, exerciseId, entry) => async (dispatch) => {
   try {
+
     const { data } = await api.AddTarget(id, exerciseId, entry);
 
 

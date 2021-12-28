@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { AddExercise } from "../../actions/auth";
+import { updateExercise } from "../../actions/auth";
 
 
 import { Modal } from "@mui/material";
@@ -21,9 +21,10 @@ const style = {
   p: 4,
 };
 
-export const AddExerciseComp = ({ user, closeAddModal, addModal}) => {
+export const AddHistoryComp = ({ user, exercise, closeAddModal, addModal}) => {
   
-  
+console.log(exercise)
+
   const history = useHistory();
 const dispatch = useDispatch();
 
@@ -33,7 +34,7 @@ const dispatch = useDispatch();
   const [formData, setFormData] = useState();
 
   const handleAdd = () => {
-    dispatch(AddExercise(user._id, formData, history));
+    dispatch(updateExercise(user._id, exercise._id, formData));
     closeAddModal();
   };
 
@@ -57,20 +58,20 @@ const dispatch = useDispatch();
           <TextField
             fullWidth
             margin="dense"
-            placeholder="Exercise"
+            placeholder="Date"
             type="text"
             onChange={(e) =>
-              setFormData({ ...formData, exercise: e.target.value })
+              setFormData({ ...formData, date: e.target.value })
             }
           />
 
           <TextField
             fullWidth
             margin="dense"
-            placeholder="Target"
+            placeholder="Weight"
             type="number"
             onChange={(e) =>
-              setFormData({ ...formData, target: e.target.value })
+              setFormData({ ...formData, weight: e.target.value })
             }
           />
 

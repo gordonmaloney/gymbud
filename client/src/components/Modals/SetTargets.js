@@ -6,6 +6,7 @@ import { Modal } from "@mui/material";
 import Box from "@mui/material/Box";
 import { TextField } from "@mui/material";
 import { useHistory } from "react-router-dom";
+import { AddTarget } from "../../actions/auth";
 
 const style = {
   position: "absolute",
@@ -19,16 +20,26 @@ const style = {
   p: 4,
 };
 
-export const SetTargets = ({ user, targetModal, closeTargetModal }) => {
+export const SetTargets = ({ user, exercise, targetModal, closeTargetModal }) => {
     const history = useHistory();
     const dispatch = useDispatch();
-    
+    const [formData, setFormData] = useState();
+
       const [open, setOpen] = useState(true);
       const handleClose = () => closeTargetModal();
 
+
+      const handleUpdate = (userId, exerciseId, formData) => {
+        console.log(userId, exerciseId, formData)
+      dispatch(AddTarget(userId, exerciseId, formData));
+    };
+
+
       const handleSave = () => {
           closeTargetModal()
+          handleUpdate(user._id, exercise._id, formData)
       }
+
     return (
         <div>
             <Modal open={targetModal} onClose={() => closeTargetModal()}>
@@ -44,15 +55,17 @@ export const SetTargets = ({ user, targetModal, closeTargetModal }) => {
           >
             <b>X</b>
           </span>
-          <h1 className="modalHeader">Set your targets</h1>
+          <h1 className="modalHeader">Set your target</h1>
 
-{user?.exercises && user.exercises.map(exercise =>
-    
-    {return <>
-    <h1 className="modalHeader">
-    {exercise.exercise}
-    </h1>
-    </>})}          
+          <TextField
+            fullWidth
+            margin="dense"
+            placeholder="Target"
+            type="number"
+            onChange={(e) =>
+              setFormData({ ...formData, target: e.target.value })
+            }
+          />
 
           <div className="customBtn" onClick={() => handleSave()}>
             Save

@@ -8,9 +8,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { AddExerciseComp } from "./Modals/AddExercise";
 import { SetTargets } from "./Modals/SetTargets";
 
-export const Footer = () => {
 
-  
+export const Footer = () => {
+ 
   const dispatch = useDispatch()
 
   const location = useLocation();
@@ -37,12 +37,16 @@ export const Footer = () => {
   }, [location]);
 
   const [addModal, setAddModal] = useState(false);
+  const [addHistoryModal, setAddHistoryModal] = useState(false);
   const [targetModal, setTargetModal] = useState(false);
 
   const handleAdd = () => {
     setAddModal(true);
   };
 
+  const handleAddHistory = () => {
+    setAddHistoryModal(true);
+  };
 
   const handleTargets = () => {
     setTargetModal(true);
@@ -50,7 +54,7 @@ export const Footer = () => {
 
   if (!user) {
     return <></>;
-  } else {
+  } else if (!/exercise/.test(window.location.href)) {
     return (
       <>
         <div
@@ -79,7 +83,7 @@ export const Footer = () => {
             left: "-110px",
             height: "220px",
             width: "220px",
-            backgroundColor: "rgba(35, 53, 89, 0.8)",
+            backgroundColor: "rgba(35, 53, 89, 0.55)",
           }}
         ></div>
 
@@ -99,64 +103,14 @@ export const Footer = () => {
           }}
         />
 
-        <div
-          onClick={handleTargets}
-          style={{
-            cursor: "pointer",
-            position: "absolute",
-            overflow: "hide",
-            zIndex: 2,
-            borderRadius: "50%",
-            bottom: "-100px",
-            right: "-100px",
-            height: "200px",
-            width: "200px",
-            backgroundColor: "#732065",
-          }}
-        ></div>
-
-        <div
-          style={{
-            position: "absolute",
-            overflow: "hide",
-            zIndex: 1,
-            borderRadius: "50%",
-            bottom: "-110px",
-            right: "-110px",
-            height: "220px",
-            width: "220px",
-            backgroundColor: "rgba(35, 53, 89, 0.8)",
-          }}
-        ></div>
-
-        <AdjustRoundedIcon
-          onClick={handleTargets}
-          style={{
-            cursor: "pointer",
-            position: "absolute",
-            overflow: "hide",
-            zIndex: 3,
-            borderRadius: "50%",
-            bottom: "10px",
-            right: "10px",
-            height: "60px",
-            width: "60px",
-            color: "white",
-          }}
-        />
-
         <AddExerciseComp
           user={user}
           addModal={addModal}
           closeAddModal={() => setAddModal(false)}
         />
-
-        <SetTargets
-                  user={user}
-                  targetModal={targetModal}
-                  closeTargetModal={() => setTargetModal(false)}
-                />
       </>
-    );
+    );    
+  } else {
+    return <></>
   }
 };

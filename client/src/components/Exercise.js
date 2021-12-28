@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import {ExerciseFooter} from './ExerciseFooter'
 import AdjustRoundedIcon from "@mui/icons-material/AdjustRounded";
 import MilitaryTechRoundedIcon from "@mui/icons-material/MilitaryTechRounded";
 import FitnessCenterRoundedIcon from "@mui/icons-material/FitnessCenterRounded";
@@ -49,15 +49,16 @@ export const Exercise = (props) => {
     exerciseProp?.history?.map((hist) => parseInt(hist.weight))
   );
 
-  let labelData = []
+  let labelData = [];
   if (exerciseProp) {
     for (let i = 0; i < exerciseProp.history.length; i++) {
       labelData.push(exerciseProp.history[i].weight);
     }
   }
-  console.log(labelData)
+  console.log(labelData);
 
 
+  
   //why isn't this working
   const [barData, setBarData] = useState({
     labels: [1, 2],
@@ -66,13 +67,13 @@ export const Exercise = (props) => {
         label: "Target",
         fill: false,
         radius: 0,
-        data: [64, 64],
+        data: [200,200],
         borderColor: ["rgba(35, 53, 89)"],
         borderWidth: [3],
       },
       {
         label: "You did",
-        data: [labelData[0],labelData[1]],
+        data: [labelData[0], labelData[1]],
 
         tension: 0.3,
         borderColor: ["white"],
@@ -194,245 +195,50 @@ export const Exercise = (props) => {
             </div>
 
             <Grid container sx={{ marginTop: "25px" }}>
-              <Grid item xs={6}>
-                <p
-                  style={{
-                    color: "#732065",
-                    marginTop: "0px",
-                    marginBottom: "0px",
-                    fontSize: "25px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  <EventRoundedIcon />
-                  10/08/2021
-                </p>
-              </Grid>
-              <Grid item xs={6}>
-                <p
-                  style={{
-                    color: "#732065",
-                    marginTop: "0px",
-                    marginBottom: "0px",
-                    fontSize: "25px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  <FitnessCenterRoundedIcon />
-                  78
-                </p>
-              </Grid>
-              <Grid item xs={12}>
-                {" "}
-                <hr style={{ width: "70%" }} />{" "}
-              </Grid>
-              <Grid item xs={6}>
-                {" "}
-                <p
-                  style={{
-                    color: "#732065",
-                    marginTop: "0px",
-                    marginBottom: "0px",
-                    fontSize: "25px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {" "}
-                  <EventRoundedIcon /> 10/08/2021{" "}
-                </p>{" "}
-              </Grid>{" "}
-              <Grid item xs={6}>
-                {" "}
-                <p
-                  style={{
-                    color: "#732065",
-                    marginTop: "0px",
-                    marginBottom: "0px",
-                    fontSize: "25px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {" "}
-                  <FitnessCenterRoundedIcon /> 78{" "}
-                </p>{" "}
-              </Grid>{" "}
-              <Grid item xs={12}>
-                {" "}
-                <hr style={{ width: "70%" }} />{" "}
-              </Grid>
-              <Grid item xs={6}>
-                {" "}
-                <p
-                  style={{
-                    color: "#732065",
-                    marginTop: "0px",
-                    marginBottom: "0px",
-                    fontSize: "25px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {" "}
-                  <EventRoundedIcon /> 10/08/2021{" "}
-                </p>{" "}
-              </Grid>{" "}
-              <Grid item xs={6}>
-                {" "}
-                <p
-                  style={{
-                    color: "#732065",
-                    marginTop: "0px",
-                    marginBottom: "0px",
-                    fontSize: "25px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {" "}
-                  <FitnessCenterRoundedIcon /> 78{" "}
-                </p>{" "}
-              </Grid>{" "}
-              <Grid item xs={12}>
-                {" "}
-                <hr style={{ width: "70%" }} />{" "}
-              </Grid>
-              <Grid item xs={6}>
-                {" "}
-                <p
-                  style={{
-                    color: "#732065",
-                    marginTop: "0px",
-                    marginBottom: "0px",
-                    fontSize: "25px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {" "}
-                  <EventRoundedIcon /> 10/08/2021{" "}
-                </p>{" "}
-              </Grid>{" "}
-              <Grid item xs={6}>
-                {" "}
-                <p
-                  style={{
-                    color: "#732065",
-                    marginTop: "0px",
-                    marginBottom: "0px",
-                    fontSize: "25px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {" "}
-                  <FitnessCenterRoundedIcon /> 78{" "}
-                </p>{" "}
-              </Grid>{" "}
-              <Grid item xs={12}>
-                {" "}
-                <hr style={{ width: "70%" }} />{" "}
-              </Grid>
-              <Grid item xs={6}>
-                {" "}
-                <p
-                  style={{
-                    color: "#732065",
-                    marginTop: "0px",
-                    marginBottom: "0px",
-                    fontSize: "25px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {" "}
-                  <EventRoundedIcon /> 10/08/2021{" "}
-                </p>{" "}
-              </Grid>{" "}
-              <Grid item xs={6}>
-                {" "}
-                <p
-                  style={{
-                    color: "#732065",
-                    marginTop: "0px",
-                    marginBottom: "0px",
-                    fontSize: "25px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {" "}
-                  <FitnessCenterRoundedIcon /> 78{" "}
-                </p>{" "}
-              </Grid>{" "}
-              <Grid item xs={12}>
-                {" "}
-                <hr style={{ width: "70%" }} />{" "}
-              </Grid>
-              <Grid item xs={6}>
-                {" "}
-                <p
-                  style={{
-                    color: "#732065",
-                    marginTop: "0px",
-                    marginBottom: "0px",
-                    fontSize: "25px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {" "}
-                  <EventRoundedIcon /> 10/08/2021{" "}
-                </p>{" "}
-              </Grid>{" "}
-              <Grid item xs={6}>
-                {" "}
-                <p
-                  style={{
-                    color: "#732065",
-                    marginTop: "0px",
-                    marginBottom: "0px",
-                    fontSize: "25px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {" "}
-                  <FitnessCenterRoundedIcon /> 78{" "}
-                </p>{" "}
-              </Grid>{" "}
-              <Grid item xs={12}>
-                {" "}
-                <hr style={{ width: "70%" }} />{" "}
-              </Grid>
-              <Grid item xs={6}>
-                {" "}
-                <p
-                  style={{
-                    color: "#732065",
-                    marginTop: "0px",
-                    marginBottom: "0px",
-                    fontSize: "25px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {" "}
-                  <EventRoundedIcon /> 10/08/2021{" "}
-                </p>{" "}
-              </Grid>{" "}
-              <Grid item xs={6}>
-                {" "}
-                <p
-                  style={{
-                    color: "#732065",
-                    marginTop: "0px",
-                    marginBottom: "0px",
-                    fontSize: "25px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {" "}
-                  <FitnessCenterRoundedIcon /> 78{" "}
-                </p>{" "}
-              </Grid>{" "}
-              <Grid item xs={12}>
-                {" "}
-                <hr style={{ width: "70%" }} />{" "}
-              </Grid>
+              {exerciseProp.history.map((exercise) => {
+                return (
+                  <>
+                    <Grid item xs={6}>
+                      <p
+                        style={{
+                          color: "#732065",
+                          marginTop: "0px",
+                          marginBottom: "0px",
+                          fontSize: "25px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        <EventRoundedIcon />
+                        {exercise.date}
+                      </p>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <p
+                        style={{
+                          color: "#732065",
+                          marginTop: "0px",
+                          marginBottom: "0px",
+                          fontSize: "25px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        <FitnessCenterRoundedIcon />
+                        {exercise.weight}
+                      </p>
+                    </Grid>
+                    <Grid item xs={12}>
+                      {" "}
+                      <hr style={{ width: "70%" }} />{" "}
+                    </Grid>
+                  </>
+                );
+              })}
+
+              
             </Grid>
           </center>
         </div>
+        {exerciseProp && <ExerciseFooter user={user} exercise={exerciseProp} /> }
       </div>
     );
   } else {
