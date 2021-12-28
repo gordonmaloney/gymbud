@@ -23,6 +23,7 @@ code {
 
 .TimelineBox {
   width: 80%;
+  max-width: 600px;
   height: 30px;
   margin-left: auto;
   margin-right: auto;

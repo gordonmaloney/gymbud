@@ -89,10 +89,18 @@ var dataMax = ''
     targetArr.push(exerciseProp.target)
    }
 
-   dataMax = (Math.max.apply(null, weightArr))+5
-   dataMin = (Math.min.apply(null, weightArr))-5
 
-   console.log(weightArr, dateArr, targetArr)
+   if (Math.max.apply(null, weightArr) > parseInt(exerciseProp.target)) {
+    dataMax = (Math.max.apply(null, weightArr))+5
+   } else {
+    dataMax = parseInt(exerciseProp.target)+5
+   }
+
+   if (Math.max.apply(null, weightArr) < parseInt(exerciseProp.target)) {
+    dataMin = (Math.min.apply(null, weightArr))-5
+   } else {
+    dataMin = parseInt(exerciseProp.target)-5
+   }
  }
 
  useEffect(() => {
@@ -193,7 +201,7 @@ var dataMax = ''
               </Grid>
             </Grid>
 
-            <div style={{ width: "90%" }}>
+            <div style={{ width: "90%", maxWidth: "600px" }}>
               <Line
               
                 data={barData}
