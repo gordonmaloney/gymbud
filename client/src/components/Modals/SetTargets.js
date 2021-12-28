@@ -38,6 +38,7 @@ export const SetTargets = ({ user, exercise, targetModal, closeTargetModal }) =>
       const handleSave = () => {
           closeTargetModal()
           handleUpdate(user._id, exercise._id, formData)
+          history.push('/')
       }
 
     return (

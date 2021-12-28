@@ -34,8 +34,9 @@ const dispatch = useDispatch();
   const [formData, setFormData] = useState();
 
   const handleAdd = () => {
-    dispatch(updateExercise(user._id, exercise._id, formData));
+    dispatch(updateExercise(user._id, exercise._id, formData, history));
     closeAddModal();
+    history.push('/')
   };
 
   return (

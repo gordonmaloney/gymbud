@@ -64,7 +64,7 @@ export const AddExercise = (id, entry, history) => async (dispatch) => {
 
     dispatch({ type: UPDATE, payload: data });
 
-    history.push('../')
+    history.push('/')
   } catch (error) {
     console.log(error);
   }
@@ -84,7 +84,7 @@ export const AddTarget = (id, exerciseId, entry) => async (dispatch) => {
 }
 
 
-export const updateExercise = (id, exerciseId, entry) => async (dispatch) => {
+export const updateExercise = (id, exerciseId, entry, history) => async (dispatch) => {
   try {
     console.log(entry)
 
@@ -94,7 +94,7 @@ export const updateExercise = (id, exerciseId, entry) => async (dispatch) => {
 
     dispatch({ type: UPDATE, payload: data });
 
-    console.log(data)
+    history.push('/')
   } catch (error) {
     console.log(error);
   }
