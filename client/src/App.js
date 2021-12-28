@@ -11,15 +11,19 @@ import { GetUser } from "./components/auth/GetUser";
 import { AddExerciseComponent } from "./components/auth/AddExercise";
 import { AddTargetComponent } from "./components/auth/AddTargetComponent";
 import { UpdateExerciseComponent } from "./components/auth/UpdateExercise";
+import { GraphTest } from "./components/GraphTest";
 
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
 
 function App() {
   return (
     <Provider store={store}>
-      <Main />
+
+<Main />
 
       {/*
+<GraphTest />
+
       <SignUp />
       <GetUsers />
       <AddExerciseComponent />

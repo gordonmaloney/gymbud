@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import { TextField } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import { AddTarget } from "../../actions/auth";
+import $ from 'jquery'
 
 const style = {
   position: "absolute",
@@ -21,6 +22,12 @@ const style = {
 };
 
 export const SetTargets = ({ user, exercise, targetModal, closeTargetModal }) => {
+
+    //remove preload class from button to not show initial animation
+    setTimeout(function(){
+      $('.preload').removeClass('preload');
+    }, 500)
+
     const history = useHistory();
     const dispatch = useDispatch();
     const [formData, setFormData] = useState();
@@ -68,7 +75,7 @@ export const SetTargets = ({ user, exercise, targetModal, closeTargetModal }) =>
             }
           />
 
-          <div className="customBtn" onClick={() => handleSave()}>
+          <div className="customBtn preload" onClick={() => handleSave()}>
             Save
           </div>
         </Box>

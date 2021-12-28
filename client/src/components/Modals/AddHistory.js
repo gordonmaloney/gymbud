@@ -8,6 +8,7 @@ import { Modal } from "@mui/material";
 import Box from "@mui/material/Box";
 import { TextField } from "@mui/material";
 import { useHistory } from "react-router-dom";
+import $ from 'jquery'
 
 const style = {
   position: "absolute",
@@ -23,7 +24,12 @@ const style = {
 
 export const AddHistoryComp = ({ user, exercise, closeAddModal, addModal}) => {
   
-console.log(exercise)
+
+    //remove preload class from button to not show initial animation
+    setTimeout(function(){
+      $('.preload').removeClass('preload');
+    }, 500)
+
 
   const history = useHistory();
 const dispatch = useDispatch();
@@ -76,7 +82,7 @@ const dispatch = useDispatch();
             }
           />
 
-          <div className="customBtn" onClick={() => handleAdd(user?.result?._id, formData)}>
+          <div className="customBtn preload" onClick={() => handleAdd(user?.result?._id, formData)}>
             Save
           </div>
         </Box>

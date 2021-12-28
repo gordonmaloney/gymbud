@@ -42,38 +42,28 @@ export const Exercise = (props) => {
     );
   }, [users, location]);
 
-  const [LABELS, setLABELS] = useState(
-    exerciseProp?.history?.map((hist) => hist.date)
-  );
-  const [DATA, setDATA] = useState(
-    exerciseProp?.history?.map((hist) => parseInt(hist.weight))
-  );
 
-  let labelData = [];
-  if (exerciseProp) {
-    for (let i = 0; i < exerciseProp.history.length; i++) {
-      labelData.push(exerciseProp.history[i].weight);
-    }
-  }
-  console.log(labelData);
+  
+
+
 
 
   
   //why isn't this working
   const [barData, setBarData] = useState({
-    labels: [1, 2],
+    labels: [''],
     datasets: [
       {
         label: "Target",
         fill: false,
         radius: 0,
-        data: [200,200],
+        data: [''],
         borderColor: ["rgba(35, 53, 89)"],
         borderWidth: [3],
       },
       {
         label: "You did",
-        data: [labelData[0], labelData[1]],
+        data: [''],
 
         tension: 0.3,
         borderColor: ["white"],
@@ -82,6 +72,57 @@ export const Exercise = (props) => {
       },
     ],
   });
+
+
+ //update chart data
+ var weightArr = []
+ var dateArr = []
+ var targetArr = []
+var dataMin = ''
+var dataMax = ''
+
+ if (exerciseProp) {
+   exerciseProp.history.map(hist => weightArr.push(parseInt(hist.weight) || 0) )
+   exerciseProp.history.map(hist => dateArr.push(hist.date) )
+   
+   for (let i = 0; i < exerciseProp.history.length; i++) {
+    targetArr.push(exerciseProp.target)
+   }
+
+   dataMax = (Math.max.apply(null, weightArr))+5
+   dataMin = (Math.min.apply(null, weightArr))-5
+
+   console.log(weightArr, dateArr, targetArr)
+ }
+
+ useEffect(() => {
+  if (exerciseProp) {
+    setBarData({
+      labels: dateArr,
+      datasets: [
+        {
+          label: "Target",
+          fill: false,
+          radius: 0,
+          data: targetArr,
+          borderColor: ["rgba(35, 53, 89)"],
+          borderWidth: [3],
+        },
+        {
+          label: "You did",
+          data: weightArr,
+  
+          tension: 0.3,
+          borderColor: ["white"],
+          backgroundColor: ["white"],
+          borderWidth: 3,
+        },
+      ],
+    });
+}
+}, [users])
+
+
 
   if (exerciseProp) {
     return (
@@ -113,6 +154,7 @@ export const Exercise = (props) => {
             >
               {exerciseProp.exercise}
             </h1>
+
 
             <Grid container>
               <Grid item xs={6}>
@@ -153,6 +195,7 @@ export const Exercise = (props) => {
 
             <div style={{ width: "90%" }}>
               <Line
+              
                 data={barData}
                 options={{
                   plugins: {
@@ -168,6 +211,10 @@ export const Exercise = (props) => {
                     x: {
                       grid: {
                         color: "white",
+                        font: {
+                          family: "Dongle",
+                          size: 20,
+                        },
                       },
                       ticks: {
                         color: "white",
@@ -178,6 +225,8 @@ export const Exercise = (props) => {
                       },
                     },
                     y: {
+                      min: dataMin,
+                      max: dataMax,
                       grid: {
                         color: "white",
                       },
