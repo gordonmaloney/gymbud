@@ -9,7 +9,12 @@ export const getUsers = async (req, res) => {
   try {
     const getUsers = await user.find();
 
+
+    //res.setHeader('Access-Control-Allow-Headers', 'Content-Type, token');
+
     res.status(200).json(getUsers);
+
+
   } catch (error) {
     res.status(404).json({ message: error });
   }
