@@ -70,7 +70,6 @@ code {
       box-shadow: 8px 8px 0px rgba(35, 53, 89, 0.8);  }
   }
 
-
 body::-webkit-scrollbar {
   display: none;
 }

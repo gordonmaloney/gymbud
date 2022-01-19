@@ -295,6 +295,8 @@ var dataMax = ''
               
             </Grid>
           </center>
+
+          <div style={{height: "150px"}} />
         </div>
         {exerciseProp && <ExerciseFooter user={user} exercise={exerciseProp} /> }
       </div>

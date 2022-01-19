@@ -15,6 +15,7 @@ export const Main = () => {
         display: "flex",
         width: "100vw",
         height: "100vh",
+        maxHeight: "100vh",
         overflowX: "hidden",
         overflowY: "hidden",
       }}
