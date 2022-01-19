@@ -61,7 +61,7 @@ export const Footer = () => {
           onClick={handleAdd}
           style={{
             cursor: "pointer",
-            position: "absolute",
+            position: "fixed",
             overflow: "hide",
             zIndex: 2,
             borderRadius: "50%",
@@ -75,7 +75,7 @@ export const Footer = () => {
 
         <div
           style={{
-            position: "absolute",
+            position: "fixed",
             overflow: "hide",
             zIndex: 1,
             borderRadius: "50%",
@@ -91,7 +91,7 @@ export const Footer = () => {
           onClick={handleAdd}
           style={{
             cursor: "pointer",
-            position: "absolute",
+            position: "fixed",
             overflow: "hide",
             zIndex: 3,
             borderRadius: "50%",

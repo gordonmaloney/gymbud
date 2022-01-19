@@ -43,7 +43,7 @@ export const ExerciseFooter = ({user, exercise}) => {
             onClick={handleAddHistory}
             style={{
               cursor: "pointer",
-              position: "absolute",
+              position: "fixed",
               overflow: "hide",
               zIndex: 2,
               borderRadius: "50%",
@@ -57,7 +57,7 @@ export const ExerciseFooter = ({user, exercise}) => {
   
           <div
             style={{
-              position: "absolute",
+              position: "fixed",
               overflow: "hide",
               zIndex: 1,
               borderRadius: "50%",
@@ -73,7 +73,7 @@ export const ExerciseFooter = ({user, exercise}) => {
             onClick={handleAddHistory}
             style={{
               cursor: "pointer",
-              position: "absolute",
+              position: "fixed",
               overflow: "hide",
               zIndex: 3,
               borderRadius: "50%",
@@ -89,7 +89,7 @@ export const ExerciseFooter = ({user, exercise}) => {
             onClick={handleTargets}
             style={{
               cursor: "pointer",
-              position: "absolute",
+              position: "fixed",
               overflow: "hide",
               zIndex: 2,
               borderRadius: "50%",
@@ -103,7 +103,7 @@ export const ExerciseFooter = ({user, exercise}) => {
   
           <div
             style={{
-              position: "absolute",
+              position: "fixed",
               overflow: "hide",
               zIndex: 1,
               borderRadius: "50%",
@@ -119,7 +119,7 @@ export const ExerciseFooter = ({user, exercise}) => {
             onClick={handleTargets}
             style={{
               cursor: "pointer",
-              position: "absolute",
+              position: "fixed",
               overflow: "hide",
               zIndex: 3,
               borderRadius: "50%",

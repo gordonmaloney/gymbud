@@ -16,7 +16,7 @@ export const Main = () => {
         width: "100vw",
         height: "100vh",
         maxHeight: "100vh",
-        overflowX: "hidden",
+        overflowX: "hidden !important",
         overflowY: "hidden",
       }}
     >
