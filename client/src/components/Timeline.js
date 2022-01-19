@@ -14,8 +14,6 @@ export const Timeline = () => {
 const dispatch = useDispatch()
 const location = useLocation()
 
-console.log("test")
-
 useEffect(() => {
   dispatch(getUsers());
 }, [location]);

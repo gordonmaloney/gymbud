@@ -134,15 +134,16 @@ var dataMax = ''
 
   if (exerciseProp) {
     return (
-      <div
-        style={{
-          display: "flex",
-          width: "100vw",
-          height: "100vh",
-          overflowX: "hidden",
-          flexDirection: "column",
-        }}
-      >
+      <div style={{display: "flex", width: "100vw", height: "100vh", maxHeight: "100vh", overflowX: "hidden", overflowY: "auto"}}>
+
+<div
+      style={{
+        width: "100vw",
+        flexDirection: "column",
+        justifyContent: "center"
+      }}
+    >
+
         <div
           style={{
             width: "100vw",
@@ -296,6 +297,7 @@ var dataMax = ''
           </center>
         </div>
         {exerciseProp && <ExerciseFooter user={user} exercise={exerciseProp} /> }
+      </div>
       </div>
     );
   } else {
