@@ -100,10 +100,10 @@ export const Exercise = (props) => {
         setDataMax(parseInt(exerciseProp.target) + 5);
       }
 
-      if (Math.max.apply(null, weightArr) < parseInt(exerciseProp.target)) {
-        setDataMin(Math.min.apply(null, weightArr) - 5);
+      if (Math.min.apply(null, weightArr) < parseInt(exerciseProp.target)) {
+        setDataMin(Math.min.apply(null, weightArr) - 1);
       } else {
-        setDataMin(parseInt(exerciseProp.target) - 5);
+        setDataMin(parseInt(exerciseProp.target) - 1);
       }
     }
   }, [exerciseProp, update]);
@@ -137,11 +137,16 @@ export const Exercise = (props) => {
     formData._id = "tempID";
     let newEntry = exerciseProp;
     newEntry.history = [...newEntry.history, formData];
-
-    console.log("new Ent", newEntry)
     setExerciseProp(newEntry);
     setUpdate(!update)
   };
+
+  const handleUpdateTarget = (target) => {
+    let newEntry = exerciseProp;
+    newEntry.target = target
+    setExerciseProp(newEntry);
+    setUpdate(!update)
+  }
 
 
   if (exerciseProp) {
@@ -318,6 +323,7 @@ export const Exercise = (props) => {
               user={user}
               exercise={exerciseProp}
               handleUpdate={(formData) => handleUpdate(formData)}
+              handleUpdateTarget={target => handleUpdateTarget(target)}
             />
           )}
         </div>

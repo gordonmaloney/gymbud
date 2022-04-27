@@ -38,7 +38,10 @@ const dispatch = useDispatch();
   const [open, setOpen] = useState(true);
   const handleClose = () => closeAddModal();
 
-  const [formData, setFormData] = useState();
+  const [formData, setFormData] = useState({
+    date: new Date().toLocaleDateString(),
+    weight: ""
+  });
 
   const handleAdd = () => {
     dispatch(updateExercise(user._id, exercise._id, formData, history));
@@ -68,6 +71,7 @@ const dispatch = useDispatch();
             fullWidth
             margin="dense"
             placeholder="Date"
+            value={formData.date}
             type="text"
             onChange={(e) =>
               setFormData({ ...formData, date: e.target.value })

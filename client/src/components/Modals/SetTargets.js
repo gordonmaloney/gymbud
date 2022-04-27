@@ -22,7 +22,7 @@ const style = {
   p: 4,
 };
 
-export const SetTargets = ({ user, exercise, targetModal, closeTargetModal }) => {
+export const SetTargets = ({ user, exercise, targetModal, closeTargetModal, handleUpdateTarget }) => {
 
     //remove preload class from button to not show initial animation
     setTimeout(function(){
@@ -45,8 +45,10 @@ export const SetTargets = ({ user, exercise, targetModal, closeTargetModal }) =>
 
       const handleSave = () => {
           closeTargetModal()
+          handleUpdateTarget(formData.target)
+
           handleUpdate(user._id, exercise._id, formData)
-          history.push('/')
+          //history.push('/')
       }
 
     return (

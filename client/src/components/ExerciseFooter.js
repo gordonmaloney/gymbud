@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { SetTargets } from "./Modals/SetTargets";
 import { AddHistoryComp } from "./Modals/AddHistory";
 
-export const ExerciseFooter = ({ user, exercise, handleUpdate }) => {
+export const ExerciseFooter = ({ user, exercise, handleUpdate, handleUpdateTarget }) => {
   const dispatch = useDispatch();
 
   const location = useLocation();
@@ -142,6 +142,7 @@ export const ExerciseFooter = ({ user, exercise, handleUpdate }) => {
           exercise={exercise}
           targetModal={targetModal}
           closeTargetModal={() => setTargetModal(false)}
+          handleUpdateTarget={target => handleUpdateTarget(target)}
         />
       </>
     );
