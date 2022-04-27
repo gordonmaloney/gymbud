@@ -1,6 +1,9 @@
 import React from "react";
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import { Exercise } from "./Exercise";
+
+//import { Exercise } from "./ExerciseMin4";
+
 import { GymBud } from "./GymBud";
 
 import { Header } from "./Header";

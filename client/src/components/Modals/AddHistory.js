@@ -23,7 +23,7 @@ const style = {
   p: 4,
 };
 
-export const AddHistoryComp = ({ user, exercise, closeAddModal, addModal}) => {
+export const AddHistoryComp = ({ user, exercise, closeAddModal, addModal, handleUpdate}) => {
   
 
     //remove preload class from button to not show initial animation
@@ -42,8 +42,9 @@ const dispatch = useDispatch();
 
   const handleAdd = () => {
     dispatch(updateExercise(user._id, exercise._id, formData, history));
+    handleUpdate(formData);
     closeAddModal();
-    history.push('/')
+    //history.push('/')
   };
 
   return (

@@ -94,7 +94,7 @@ export const updateExercise = (id, exerciseId, entry, history) => async (dispatc
 
     dispatch({ type: UPDATE, payload: data });
 
-    history.push('/')
+    //history.push('/')
   } catch (error) {
     console.log(error);
   }
