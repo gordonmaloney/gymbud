@@ -100,6 +100,23 @@ export const updateExercise = (id, exerciseId, entry, history) => async (dispatc
   }
 }
 
+
+export const replaceExercise = (id, exerciseId, entry, history) => async (dispatch) => {
+  try {
+    console.log(entry)
+
+    const { data } = await api.ReplaceExercise(id, exerciseId, entry);
+
+    console.log(data)
+
+    dispatch({ type: UPDATE, payload: data });
+
+    //history.push('/')
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export const RemoveExercise = (id, exerciseId, history) => async (dispatch) => {
   try {
 

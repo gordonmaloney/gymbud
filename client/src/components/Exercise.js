@@ -6,15 +6,15 @@ import FitnessCenterRoundedIcon from "@mui/icons-material/FitnessCenterRounded";
 import EventRoundedIcon from "@mui/icons-material/EventRounded";
 import Chart from "chart.js/auto";
 import { Line } from "react-chartjs-2";
-import { Box, Grid, Modal } from "@mui/material";
+import { Box, Grid, Modal, TextField } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getUsers, RemoveExercise } from "../actions/auth";
+import { getUsers, RemoveExercise, replaceExercise } from "../actions/auth";
 import { useHistory } from "react-router-dom";
 
 import axios from "axios";
-import {API} from '../api/index'
+import { API } from "../api/index";
 
 const style = {
   position: "absolute",
@@ -41,9 +41,8 @@ export const Exercise = (props) => {
     dispatch(getUsers());
   }, [location]);
 
-  const stateUsers = useSelector(state => state.auth)
-  
-  const [users, setUsers] = useState(stateUsers)
+  const users = useSelector((state) => state.auth);
+  //  const [users, setUsers] = useState(stateUsers);
 
   const localUser = JSON.parse(localStorage.getItem("profile"));
 
@@ -71,9 +70,8 @@ export const Exercise = (props) => {
         (exercise) => exercise._id == props.match.params.exerciseId
       )[0]
     );
+    console.log(users);
   }, [users]);
-
-  console.log(users)
 
   useEffect(() => {
     setExerciseProp(
@@ -81,7 +79,7 @@ export const Exercise = (props) => {
         (exercise) => exercise._id == props.match.params.exerciseId
       )[0]
     );
-  }, [users, user])
+  }, [user]);
 
   const [barData, setBarData] = useState({
     labels: [""],
@@ -121,16 +119,20 @@ export const Exercise = (props) => {
 
       setTargetArr(exerciseProp.history.map((hist) => exerciseProp.target));
 
-        //remove any NaNs just in case
-      const weightArrCleaned = weightArr.filter(weight => weight > 0)
+      //remove any NaNs just in case
+      const weightArrCleaned = weightArr.filter((weight) => weight > 0);
 
-      if (Math.max.apply(null, weightArrCleaned) > parseInt(exerciseProp.target)) {
+      if (
+        Math.max.apply(null, weightArrCleaned) > parseInt(exerciseProp.target)
+      ) {
         setDataMax(Math.max.apply(null, weightArrCleaned) + 1);
       } else {
         setDataMax(parseInt(exerciseProp.target) + 1);
       }
 
-      if (Math.min.apply(null, weightArrCleaned) < parseInt(exerciseProp.target)) {
+      if (
+        Math.min.apply(null, weightArrCleaned) < parseInt(exerciseProp.target)
+      ) {
         setDataMin(Math.min.apply(null, weightArrCleaned) - 1);
       } else {
         setDataMin(parseInt(exerciseProp.target) - 1);
@@ -161,7 +163,7 @@ export const Exercise = (props) => {
         },
       ],
     });
-  }, [user, weightArr, dateArr, targetArr, exerciseProp, update]);
+  }, [weightArr, dateArr, targetArr, exerciseProp]);
 
   const handleUpdate = (formData) => {
     let newEntry = exerciseProp;
@@ -174,31 +176,63 @@ export const Exercise = (props) => {
     setUpdate(!update);
   };
 
-
   const getUsersTest = async () => {
     try {
-    const req = await API.get(`/users/`);
-    const res = req.data;
-    console.log(res);
-    setUsers(res)
-    setUser(
-      res.filter(
-        (filteredUser) => filteredUser._id == props.match.params.userId
-      )[0]
-    );
-    console.log("data fetched");
-  } catch (err) {
-    console.log(err);
-  }
-};
+      const req = await API.get(`/users/`);
+      const res = req.data;
+      console.log(res);
+      // setUsers(res);
+      setUser(
+        res.filter(
+          (filteredUser) => filteredUser._id == props.match.params.userId
+        )[0]
+      );
 
+      setExerciseProp(
+        res
+          .filter(
+            (filteredUser) => filteredUser._id == props.match.params.userId
+          )[0]
+          .exercises?.filter(
+            (exercise) => exercise._id == props.match.params.exerciseId
+          )[0]
+      );
 
-useEffect(() => {
-  getUsersTest()
-}, [update])
+      console.log("data fetched");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  console.log(exerciseProp?.history?.length);
+
+  useEffect(() => {
+    //getUsersTest()
+  }, [update]);
 
   //delete modal
   const [deleteModal, setDeleteModal] = useState(false);
+
+  //edit modal
+  const [editModal, setEditModal] = useState(false);
+  const [editFormData, setEditFormData] = useState();
+  const [editIndex, setEditIndex] = useState();
+
+  const saveEditModal = () => {
+    const fixedIndex = exerciseProp.history.length - (editIndex + 1);
+    console.log(editFormData);
+    console.log(exerciseProp);
+
+    let newExerciseProp = exerciseProp
+    newExerciseProp.history[fixedIndex] = editFormData
+
+    console.log(newExerciseProp.history)
+
+    dispatch(replaceExercise(user._id, exerciseProp._id, newExerciseProp.history));
+    setExerciseProp(newExerciseProp)
+    setUpdate(!update)
+    setEditModal(false)
+  };
 
   if (exerciseProp) {
     return (
@@ -283,7 +317,13 @@ useEffect(() => {
                   </p>
                 </Grid>
               </Grid>
-              <div>
+
+              <div
+                style={{
+                  width: "90%",
+                  maxWidth: "500px",
+                }}
+              >
                 {exerciseProp?.history.length > 0 ? (
                   <Line
                     data={barData}
@@ -340,7 +380,7 @@ useEffect(() => {
                 {exerciseProp.history
                   .slice(0)
                   .reverse()
-                  .map((exercise) => {
+                  .map((exercise, index) => {
                     return (
                       <>
                         <Grid item xs={6}>
@@ -367,8 +407,19 @@ useEffect(() => {
                               fontWeight: "bold",
                             }}
                           >
-                            <FitnessCenterRoundedIcon />
-                            {exercise.weight}
+                            <div
+                              onClick={() => {
+                                setEditModal(true);
+                                setEditFormData({
+                                  weight: exercise.weight,
+                                  date: exercise.date,
+                                });
+                                setEditIndex(index);
+                              }}
+                            >
+                              <FitnessCenterRoundedIcon />
+                              {exercise.weight}
+                            </div>
                           </p>
                         </Grid>
                         <Grid item xs={12}>
@@ -429,6 +480,73 @@ useEffect(() => {
                       }}
                     >
                       Keep it
+                    </div>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Modal>
+
+            <Modal open={editModal} onClose={() => setEditModal(false)}>
+              <Box sx={style}>
+                <p
+                  style={{
+                    color: "#732065",
+                    marginTop: "0px",
+                    marginBottom: "0px",
+                    fontSize: "30px",
+                    fontWeight: "bold",
+                    lineHeight: "30px",
+                  }}
+                >
+                  Edit entry
+                </p>
+
+                <br />
+                <TextField
+                  fullWidth
+                  margin="dense"
+                  value={editFormData?.date}
+                  placeholder="Date"
+                  type="text"
+                  onChange={(e) =>
+                    setEditFormData({ ...editFormData, date: e.target.value })
+                  }
+                />
+
+                <TextField
+                  fullWidth
+                  //sx={{border: emptyWeight && "red 1px solid"}}
+                  margin="dense"
+                  placeholder="Weight"
+                  value={editFormData?.weight}
+                  type="number"
+                  onChange={(e) =>
+                    setEditFormData({ ...editFormData, weight: e.target.value })
+                  }
+                />
+                <br />
+                <br />
+                <Grid container sx={{ justifyContent: "space-around" }}>
+                  <Grid item xs={5}>
+                    <div
+                      className="TimelineBox preload"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        saveEditModal();
+                      }}
+                    >
+                      Save
+                    </div>
+                  </Grid>
+                  <Grid item xs={5}>
+                    <div
+                      className="TimelineBox preload"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        setEditModal(false);
+                      }}
+                    >
+                      Cancel
                     </div>
                   </Grid>
                 </Grid>

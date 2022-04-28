@@ -24,4 +24,5 @@ export const RemoveExercise = (id, exerciseId) => API.delete(`/users/${id}/${exe
 
 export const AddTarget = (id, exerciseId, exercise) => API.post(`/users/${id}/${exerciseId}`, exercise)
 
-export const UpdateExercise = (id, exerciseId, exercise) => API.patch(`/users/${id}/${exerciseId}`, exercise)
+export const UpdateExercise = (id, exerciseId, exercise) => API.put(`/users/${id}/${exerciseId}`, exercise)
+export const ReplaceExercise = (id, exerciseId, exercise) => API.patch(`/users/${id}/${exerciseId}`, exercise)

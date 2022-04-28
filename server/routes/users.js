@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { AddExercise, AddTarget, getUser, getUsers, signin, signup, UpdateExercise } from '../controllers/users.js'
+import { AddExercise, AddTarget, getUser, getUsers, signin, signup, UpdateExercise, RemoveExercise, ReplaceExercise } from '../controllers/users.js'
 
 const router = express.Router();
 
@@ -14,7 +14,11 @@ router.post('/:id', AddExercise);
 //this overrites, so can add or update - needs to come as {target: num}
 router.post('/:id/:exerciseId', AddTarget);
 
-router.patch('/:id/:exerciseId', UpdateExercise);
+router.put('/:id/:exerciseId', UpdateExercise);
+
+router.patch('/:id/:exerciseId', ReplaceExercise);
+
+router.delete('/:id/:exerciseId', RemoveExercise);
 
 
 

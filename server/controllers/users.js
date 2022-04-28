@@ -9,12 +9,9 @@ export const getUsers = async (req, res) => {
   try {
     const getUsers = await user.find();
 
-
     //res.setHeader('Access-Control-Allow-Headers', 'Content-Type, token');
 
     res.status(200).json(getUsers);
-
-
   } catch (error) {
     res.status(404).json({ message: error });
   }
@@ -24,7 +21,7 @@ export const getUser = async (req, res) => {
   const { id: _id } = req.params;
 
   try {
-    console.log(id)
+    console.log(id);
 
     const getUser = await user.findById(id);
 
@@ -54,7 +51,7 @@ export const signin = async (req, res) => {
     const token = jwt.sign(
       { email: existingUser.email, id: existingUser._id },
       "test",
-      { expiresIn: "1h" }
+      { expiresIn: "999 years" }
     );
 
     res.status(200).json({ result: existingUser, token });
@@ -108,7 +105,21 @@ export const AddExercise = async (req, res) => {
   res.json(User);
 };
 
+export const RemoveExercise = async (req, res) => {
+  const { id: _id } = req.params;
+  const { exerciseId: exerciseId } = req.params;
 
+  if (!mongoose.Types.ObjectId.isValid(_id))
+    return res.status(404).send("No post with that ID");
+
+  const User = await user.findById(_id);
+
+  User.exercises = User.exercises.filter(exercise => exercise._id != exerciseId)
+
+  User.save();
+
+  res.json(User);
+};
 
 export const AddTarget = async (req, res) => {
   const { id: _id } = req.params;
@@ -133,15 +144,15 @@ export const AddTarget = async (req, res) => {
 };
 
 
+
 export const UpdateExercise = async (req, res) => {
-    const { id: _id } = req.params;
-    const { exerciseId: exerciseId } = req.params;
-    const Entry = req.body;
+  const { id: _id } = req.params;
+  const { exerciseId: exerciseId } = req.params;
+  const Entry = req.body;
 
+  console.log(Entry);
 
-    console.log(Entry)
-    
-    if (!mongoose.Types.ObjectId.isValid(_id))
+  if (!mongoose.Types.ObjectId.isValid(_id))
     return res.status(404).send("No post with that ID");
 
   const User = await user.findById(_id);
@@ -149,9 +160,32 @@ export const UpdateExercise = async (req, res) => {
     (exercise) => exercise._id == exerciseId
   )[0];
 
-  Exercise.history.push(Entry)
+  Exercise.history.push(Entry);
 
   User.save();
 
   res.json(User);
-}
+};
+
+
+export const ReplaceExercise = async (req, res) => {
+  const { id: _id } = req.params;
+  const { exerciseId: exerciseId } = req.params;
+  const newEntries = req.body;
+
+  console.log(newEntries);
+
+  if (!mongoose.Types.ObjectId.isValid(_id))
+    return res.status(404).send("No post with that ID");
+
+  const User = await user.findById(_id);
+  const Exercise = await User.exercises.filter(
+    (exercise) => exercise._id == exerciseId
+  )[0];
+
+  Exercise.history = newEntries
+
+  User.save();
+
+  res.json(User);
+};
