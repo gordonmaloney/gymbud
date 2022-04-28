@@ -8,29 +8,32 @@ import { useSelector, useDispatch } from "react-redux";
 import { AddExerciseComp } from "./Modals/AddExercise";
 import { SetTargets } from "./Modals/SetTargets";
 
-
 export const Footer = () => {
- 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const location = useLocation();
 
   useEffect(() => {
     dispatch(getUsers());
   }, [location]);
-  
+
   const users = useSelector((state) => state.auth);
   const localUser = JSON.parse(localStorage.getItem("profile"));
-  
-  const [user, setUser] = useState('')
-  
-  useEffect(() => {
-    localUser && localUser?.result && users.length > 0 &&
-    setUser(users.filter(filteredUser => filteredUser._id == localUser?.result?._id )[0])
-  
-    if (!localUser) setUser('')
-  }, [users, location])
 
+  const [user, setUser] = useState("");
+
+  useEffect(() => {
+    localUser &&
+      localUser?.result &&
+      users.length > 0 &&
+      setUser(
+        users.filter(
+          (filteredUser) => filteredUser._id == localUser?.result?._id
+        )[0]
+      );
+
+    if (!localUser) setUser("");
+  }, [users, location]);
 
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("profile")));
@@ -59,21 +62,11 @@ export const Footer = () => {
       <>
         <div
           onClick={handleAdd}
-          style={{
-            cursor: "pointer",
-            position: "fixed",
-            overflow: "hide",
-            zIndex: 2,
-            borderRadius: "50%",
-            bottom: "-100px",
-            left: "-100px",
-            height: "200px",
-            width: "200px",
-            backgroundColor: "#732065",
-          }}
+          className="footerLeftTop"
         ></div>
 
         <div
+          className="footerLeftBottom"
           style={{
             position: "fixed",
             overflow: "hide",
@@ -109,8 +102,8 @@ export const Footer = () => {
           closeAddModal={() => setAddModal(false)}
         />
       </>
-    );    
+    );
   } else {
-    return <></>
+    return <></>;
   }
 };

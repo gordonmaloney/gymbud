@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { updateExercise } from "../../actions/auth";
@@ -40,13 +40,23 @@ const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     date: new Date().toLocaleDateString(),
-    weight: ""
+    weight: 0
   });
 
+  const [emptyWeight, setEmptyWeight] = useState(false)
+
+  useEffect(() => {
+    formData.weight > 0 && setEmptyWeight(false)
+  }, [formData])
+
   const handleAdd = () => {
+    if (formData.weight > 0) {
     dispatch(updateExercise(user._id, exercise._id, formData, history));
     handleUpdate(formData);
     closeAddModal();
+    } else {
+      setEmptyWeight(true)
+    }
     //history.push('/')
   };
 
@@ -80,6 +90,7 @@ const dispatch = useDispatch();
 
           <TextField
             fullWidth
+            sx={{border: emptyWeight && "red 1px solid"}}
             margin="dense"
             placeholder="Weight"
             type="number"

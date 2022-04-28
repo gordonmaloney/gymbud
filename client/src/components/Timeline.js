@@ -46,8 +46,16 @@ export const Timeline = () => {
     return (
       <div className="TimelineBox preload">
         <Grid container sx={{ justifyContent: "space-between" }}>
-          <Grid item xs={4}>
-            {name}
+          <Grid item xs={8}>
+            <div
+              style={{
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {name}
+            </div>
           </Grid>
           <span
             style={{
@@ -57,6 +65,7 @@ export const Timeline = () => {
             }}
           />
 
+          {/*
           <Grid item>
             <AdjustRoundedIcon />
             {target}
@@ -86,10 +95,20 @@ export const Timeline = () => {
               }}
             />
           </Grid>
+            */}
 
-          <Grid item>
-            <MilitaryTechRoundedIcon />
-            {best}
+          <Grid item xs={3}>
+
+            <div
+              style={{
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >            <MilitaryTechRoundedIcon />
+
+            {best ? best : 0}
+            </div>
           </Grid>
         </Grid>
       </div>

@@ -30,11 +30,11 @@ code {
   background-color: #732065;
   padding: 10px;
   padding-left: 20px;
-  padding-bottom: 20px;
+  padding-bottom: 15px;
   margin-bottom: 30px;
   color: white;
   font-family: "Dongle";
-  font-size: 30px;
+  font-size: 25px;
   box-shadow: 8px 8px 0px rgba(35, 53, 89, 0.8);
   text-align: left;
 
@@ -134,4 +134,18 @@ a {
 
 .preload {
   animation-duration: 0s !important;
+}
+
+
+.footerLeftTop {
+  cursor: pointer;
+  position: fixed;
+  overflow: hide;
+  z-index: 2;
+  border-radius: 50%;
+  bottom: -100px;
+  left: -100px;
+  height: 200px;
+  width: 200px;
+  background-color: #732065;
 }

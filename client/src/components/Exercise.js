@@ -6,39 +6,58 @@ import FitnessCenterRoundedIcon from "@mui/icons-material/FitnessCenterRounded";
 import EventRoundedIcon from "@mui/icons-material/EventRounded";
 import Chart from "chart.js/auto";
 import { Line } from "react-chartjs-2";
-import { Grid } from "@mui/material";
+import { Box, Grid, Modal } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getUsers } from "../actions/auth";
+import { getUsers, RemoveExercise } from "../actions/auth";
+import { useHistory } from "react-router-dom";
+
+import axios from "axios";
+import {API} from '../api/index'
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  maxWidth: "500px",
+  transform: "translate(-50%, -50%)",
+  width: "70%",
+  bgcolor: "background.paper",
+  border: "4px solid #732065",
+  boxShadow: 10,
+  p: 4,
+  paddingBottom: 2,
+};
 
 export const Exercise = (props) => {
+  const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const [update, setUpdate] = useState(true)
+  const [update, setUpdate] = useState(true);
 
-  //HERE IS PROBLEM - USERS ARRAY ISN'T BEING UPDATED
   useEffect(() => {
     dispatch(getUsers());
   }, [location]);
+
+  const stateUsers = useSelector(state => state.auth)
   
-  const users = useSelector((state) => state.auth);
+  const [users, setUsers] = useState(stateUsers)
 
   const localUser = JSON.parse(localStorage.getItem("profile"));
 
   const [user, setUser] = useState("");
-  
+
   const [exerciseProp, setExerciseProp] = useState({
     history: [""],
     target: 0,
   });
 
-
   useEffect(() => {
     localUser &&
       localUser?.result &&
-      users.length > 0 &&
+      users?.length > 0 &&
       setUser(
         users.filter(
           (filteredUser) => filteredUser._id == props.match.params.userId
@@ -54,7 +73,15 @@ export const Exercise = (props) => {
     );
   }, [users]);
 
-  console.log(exerciseProp?.history.length);
+  console.log(users)
+
+  useEffect(() => {
+    setExerciseProp(
+      user?.exercises?.filter(
+        (exercise) => exercise._id == props.match.params.exerciseId
+      )[0]
+    );
+  }, [users, user])
 
   const [barData, setBarData] = useState({
     labels: [""],
@@ -94,19 +121,22 @@ export const Exercise = (props) => {
 
       setTargetArr(exerciseProp.history.map((hist) => exerciseProp.target));
 
-      if (Math.max.apply(null, weightArr) > parseInt(exerciseProp.target)) {
-        setDataMax(Math.max.apply(null, weightArr) + 5);
+        //remove any NaNs just in case
+      const weightArrCleaned = weightArr.filter(weight => weight > 0)
+
+      if (Math.max.apply(null, weightArrCleaned) > parseInt(exerciseProp.target)) {
+        setDataMax(Math.max.apply(null, weightArrCleaned) + 1);
       } else {
-        setDataMax(parseInt(exerciseProp.target) + 5);
+        setDataMax(parseInt(exerciseProp.target) + 1);
       }
 
-      if (Math.min.apply(null, weightArr) < parseInt(exerciseProp.target)) {
-        setDataMin(Math.min.apply(null, weightArr) - 1);
+      if (Math.min.apply(null, weightArrCleaned) < parseInt(exerciseProp.target)) {
+        setDataMin(Math.min.apply(null, weightArrCleaned) - 1);
       } else {
         setDataMin(parseInt(exerciseProp.target) - 1);
       }
     }
-  }, [exerciseProp, update]);
+  }, [exerciseProp, user, users, update]);
 
   useEffect(() => {
     setBarData({
@@ -131,23 +161,44 @@ export const Exercise = (props) => {
         },
       ],
     });
-  }, [weightArr, dateArr, targetArr, exerciseProp, update]);
+  }, [user, weightArr, dateArr, targetArr, exerciseProp, update]);
 
   const handleUpdate = (formData) => {
-    formData._id = "tempID";
     let newEntry = exerciseProp;
     newEntry.history = [...newEntry.history, formData];
     setExerciseProp(newEntry);
-    setUpdate(!update)
+    setUpdate(!update);
   };
 
   const handleUpdateTarget = (target) => {
-    let newEntry = exerciseProp;
-    newEntry.target = target
-    setExerciseProp(newEntry);
-    setUpdate(!update)
-  }
+    setUpdate(!update);
+  };
 
+
+  const getUsersTest = async () => {
+    try {
+    const req = await API.get(`/users/`);
+    const res = req.data;
+    console.log(res);
+    setUsers(res)
+    setUser(
+      res.filter(
+        (filteredUser) => filteredUser._id == props.match.params.userId
+      )[0]
+    );
+    console.log("data fetched");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
+useEffect(() => {
+  getUsersTest()
+}, [update])
+
+  //delete modal
+  const [deleteModal, setDeleteModal] = useState(false);
 
   if (exerciseProp) {
     return (
@@ -183,6 +234,7 @@ export const Exercise = (props) => {
                   marginTop: "100px",
                   fontSize: "50px",
                   fontWeight: "normal",
+                  lineHeight: "45px",
                 }}
               >
                 {exerciseProp.exercise}
@@ -220,101 +272,168 @@ export const Exercise = (props) => {
                       exerciseProp?.history.map(
                         (ex) => parseInt(ex.weight) || parseInt(0)
                       )
-                    )}
+                    ) > 1
+                      ? Math.max.apply(
+                          null,
+                          exerciseProp?.history.map(
+                            (ex) => parseInt(ex.weight) || parseInt(0)
+                          )
+                        )
+                      : 0}
                   </p>
                 </Grid>
               </Grid>
+              <div>
+                {exerciseProp?.history.length > 0 ? (
+                  <Line
+                    data={barData}
+                    options={{
+                      plugins: {
+                        title: {
+                          display: false,
+                        },
+                        legend: {
+                          display: false,
+                        },
+                      },
 
-              <div style={{ width: "90%", maxWidth: "600px" }}>
-                <Line
-                  data={barData}
-                  options={{
-                    plugins: {
-                      title: {
-                        display: false,
-                      },
-                      legend: {
-                        display: false,
-                      },
-                    },
-
-                    scales: {
-                      x: {
-                        grid: {
-                          color: "white",
-                          font: {
-                            family: "Dongle",
-                            size: 20,
+                      scales: {
+                        x: {
+                          grid: {
+                            color: "white",
+                            font: {
+                              family: "Dongle",
+                              size: 20,
+                            },
+                          },
+                          ticks: {
+                            color: "white",
+                            font: {
+                              family: "Dongle",
+                              size: 20,
+                            },
                           },
                         },
-                        ticks: {
-                          color: "white",
-                          font: {
-                            family: "Dongle",
-                            size: 20,
+                        y: {
+                          min: dataMin,
+                          max: dataMax,
+                          grid: {
+                            color: "white",
                           },
-                        },
-                      },
-                      y: {
-                        min: dataMin,
-                        max: dataMax,
-                        grid: {
-                          color: "white",
-                        },
-                        ticks: {
-                          color: "white",
-                          font: {
-                            family: "Dongle",
-                            size: 20,
+                          ticks: {
+                            color: "white",
+                            font: {
+                              family: "Dongle",
+                              size: 20,
+                            },
                           },
                         },
                       },
-                    },
-                  }}
-                />
+                    }}
+                  />
+                ) : (
+                  <></>
+                )}
               </div>
 
               <Grid container sx={{ marginTop: "25px" }}>
-                {exerciseProp.history.slice(0).reverse().map((exercise) => {
-                  return (
-                    <>
-                      <Grid item xs={6}>
-                        <p
-                          style={{
-                            color: "#732065",
-                            marginTop: "0px",
-                            marginBottom: "0px",
-                            fontSize: "25px",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          <EventRoundedIcon />
-                          {exercise.date}
-                        </p>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <p
-                          style={{
-                            color: "#732065",
-                            marginTop: "0px",
-                            marginBottom: "0px",
-                            fontSize: "25px",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          <FitnessCenterRoundedIcon />
-                          {exercise.weight}
-                        </p>
-                      </Grid>
-                      <Grid item xs={12}>
-                        {" "}
-                        <hr style={{ width: "70%" }} />{" "}
-                      </Grid>
-                    </>
-                  );
-                })}
+                {exerciseProp.history
+                  .slice(0)
+                  .reverse()
+                  .map((exercise) => {
+                    return (
+                      <>
+                        <Grid item xs={6}>
+                          <p
+                            style={{
+                              color: "#732065",
+                              marginTop: "0px",
+                              marginBottom: "0px",
+                              fontSize: "25px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            <EventRoundedIcon />
+                            {exercise.date}
+                          </p>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <p
+                            style={{
+                              color: "#732065",
+                              marginTop: "0px",
+                              marginBottom: "0px",
+                              fontSize: "25px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            <FitnessCenterRoundedIcon />
+                            {exercise.weight}
+                          </p>
+                        </Grid>
+                        <Grid item xs={12}>
+                          {" "}
+                          <hr style={{ width: "70%" }} />{" "}
+                        </Grid>
+                      </>
+                    );
+                  })}
               </Grid>
+
+              <div
+                className="TimelineBox preload"
+                style={{ width: "50%", cursor: "pointer" }}
+                onClick={() => {
+                  setDeleteModal(true);
+                }}
+              >
+                Delete this exercise
+              </div>
             </center>
+
+            <Modal open={deleteModal} onClose={() => setDeleteModal(false)}>
+              <Box sx={style}>
+                <p
+                  style={{
+                    color: "#732065",
+                    marginTop: "0px",
+                    marginBottom: "0px",
+                    fontSize: "30px",
+                    fontWeight: "bold",
+                    lineHeight: "30px",
+                  }}
+                >
+                  Are you sure you want to delete this exercise?
+                </p>
+                <br />
+                <Grid container sx={{ justifyContent: "space-around" }}>
+                  <Grid item xs={5}>
+                    <div
+                      className="TimelineBox preload"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        dispatch(
+                          RemoveExercise(user._id, exerciseProp._id, history)
+                        );
+                      }}
+                    >
+                      Delete it
+                    </div>
+                  </Grid>
+                  <Grid item xs={5}>
+                    <div
+                      className="TimelineBox preload"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        setDeleteModal(false);
+                      }}
+                    >
+                      Keep it
+                    </div>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Modal>
 
             <div style={{ height: "150px" }} />
           </div>
@@ -323,7 +442,7 @@ export const Exercise = (props) => {
               user={user}
               exercise={exerciseProp}
               handleUpdate={(formData) => handleUpdate(formData)}
-              handleUpdateTarget={target => handleUpdateTarget(target)}
+              handleUpdateTarget={(target) => handleUpdateTarget(target)}
             />
           )}
         </div>

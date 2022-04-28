@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-//const API = axios.create({baseURL: 'http://localhost:5000' });
-const API = axios.create({baseURL: 'https://gymbud-tracker.herokuapp.com' });
+//export const API = axios.create({baseURL: 'http://localhost:5000' });
+export const API = axios.create({baseURL: 'https://gymbud-tracker.herokuapp.com' });
 
 //ignore
 export const fetchPosts = () => API.get('/posts');
@@ -16,10 +16,11 @@ export const signUp = (formData) => API.post('/users/signup', formData)
 
 export const getUsers = () => API.get('/users/')
 
-//not working vvv, works on postman
 export const getUser = (id) => API.post('/users/:id')
 
 export const AddExercise = (id, entry) => API.post(`/users/${id}`, entry)
+
+export const RemoveExercise = (id, exerciseId) => API.delete(`/users/${id}/${exerciseId}`)
 
 export const AddTarget = (id, exerciseId, exercise) => API.post(`/users/${id}/${exerciseId}`, exercise)
 
