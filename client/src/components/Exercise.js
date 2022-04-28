@@ -122,6 +122,8 @@ export const Exercise = (props) => {
       //remove any NaNs just in case
       const weightArrCleaned = weightArr.filter((weight) => weight > 0);
 
+      console.log(Math.max.apply(null, weightArrCleaned));
+
       if (
         Math.max.apply(null, weightArrCleaned) > parseInt(exerciseProp.target)
       ) {
@@ -139,6 +141,31 @@ export const Exercise = (props) => {
       }
     }
   }, [exerciseProp, user, users, update]);
+
+  useEffect(() => {
+    if (exerciseProp?.history.length > 0) {
+      const weightArrCleaned = weightArr.filter((weight) => weight > 0);
+
+      console.log(Math.max.apply(null, weightArrCleaned));
+
+      if (
+        Math.max.apply(null, weightArrCleaned) > parseInt(exerciseProp.target)
+      ) {
+        setDataMax(Math.max.apply(null, weightArrCleaned) + 1);
+      } else {
+        setDataMax(parseInt(exerciseProp.target) + 1);
+      }
+
+      if (
+        Math.min.apply(null, weightArrCleaned) < parseInt(exerciseProp.target)
+      ) {
+        setDataMin(Math.min.apply(null, weightArrCleaned) - 1);
+      } else {
+        setDataMin(parseInt(exerciseProp.target) - 1);
+      }
+    }
+  }, [weightArr, update]);
+  console.log(dataMin, dataMax);
 
   useEffect(() => {
     setBarData({
@@ -163,7 +190,7 @@ export const Exercise = (props) => {
         },
       ],
     });
-  }, [weightArr, dateArr, targetArr, exerciseProp]);
+  }, [weightArr, dateArr, targetArr, exerciseProp, update]);
 
   const handleUpdate = (formData) => {
     let newEntry = exerciseProp;
@@ -223,15 +250,17 @@ export const Exercise = (props) => {
     console.log(editFormData);
     console.log(exerciseProp);
 
-    let newExerciseProp = exerciseProp
-    newExerciseProp.history[fixedIndex] = editFormData
+    let newExerciseProp = exerciseProp;
+    newExerciseProp.history[fixedIndex] = editFormData;
 
-    console.log(newExerciseProp.history)
+    console.log(newExerciseProp.history);
 
-    dispatch(replaceExercise(user._id, exerciseProp._id, newExerciseProp.history));
-    setExerciseProp(newExerciseProp)
-    setUpdate(!update)
-    setEditModal(false)
+    dispatch(
+      replaceExercise(user._id, exerciseProp._id, newExerciseProp.history)
+    );
+    setExerciseProp(newExerciseProp);
+    setUpdate(!update);
+    setEditModal(false);
   };
 
   if (exerciseProp) {
@@ -408,6 +437,7 @@ export const Exercise = (props) => {
                             }}
                           >
                             <div
+                              style={{ cursor: "pointer" }}
                               onClick={() => {
                                 setEditModal(true);
                                 setEditFormData({
