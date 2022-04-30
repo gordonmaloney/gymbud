@@ -11,8 +11,6 @@ export const GymBud = () => {
             
             <Timeline />
 
-
-            <Footer />
         </div>
     )
 }

@@ -591,6 +591,7 @@ export const Exercise = (props) => {
               exercise={exerciseProp}
               handleUpdate={(formData) => handleUpdate(formData)}
               handleUpdateTarget={(target) => handleUpdateTarget(target)}
+              tooltip={exerciseProp.history.length > 0 ? false : true}
             />
           )}
         </div>

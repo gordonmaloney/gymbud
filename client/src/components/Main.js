@@ -49,7 +49,6 @@ export const Main = () => {
           </AnimatedSwitch>
           </Switch>
 
-          <Footer />
       </BrowserRouter>
     </div>
   );

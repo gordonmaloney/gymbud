@@ -9,6 +9,7 @@ import { getUser } from "../actions/auth";
 import { useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getUsers } from "../actions/auth";
+import { Footer } from "./Footer";
 
 export const Timeline = () => {
   const dispatch = useDispatch();
@@ -38,9 +39,11 @@ export const Timeline = () => {
 
   //const user = JSON.parse(localStorage.getItem("profile"));
 
-  setTimeout(function () {
-    $(".preload").removeClass("preload");
-  }, 500);
+  useEffect(() => {
+    setTimeout(function () {
+      $(".preload").removeClass("preload");
+    }, 1000);
+  }, []);
 
   const TimelineBox = ({ name, target, last, best }) => {
     return (
@@ -98,16 +101,16 @@ export const Timeline = () => {
             */}
 
           <Grid item xs={3}>
-
             <div
               style={{
                 whiteSpace: "nowrap",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
               }}
-            >            <MilitaryTechRoundedIcon />
-
-            {best ? best : 0}
+            >
+              {" "}
+              <MilitaryTechRoundedIcon />
+              {best ? best : 0}
             </div>
           </Grid>
         </Grid>
@@ -136,16 +139,24 @@ export const Timeline = () => {
             );
             let best = parseInt(Math.max.apply(null, total));
             return (
-              <Link to={`${user._id}/exercise/${exercise._id}`}>
-                <TimelineBox
-                  name={exercise.exercise}
-                  target={exercise.target}
-                  last={exercise?.history[exercise.history.length - 1]?.weight}
-                  best={best}
-                />
-              </Link>
+              <div onContextMenu={(e) => e.preventDefault()}>
+                <Link to={`${user._id}/exercise/${exercise._id}`}>
+                  <TimelineBox
+                    name={exercise.exercise}
+                    target={exercise.target}
+                    last={
+                      exercise?.history[exercise.history.length - 1]?.weight
+                    }
+                    best={best}
+                  />
+                </Link>
+              </div>
             );
           })}
+
+{user && 
+<Footer tooltip={user.exercises.length > 0 ? false : true} />
+}
 
         {!user && (
           <h1 className="modalHeader">

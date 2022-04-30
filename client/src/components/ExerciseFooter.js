@@ -8,7 +8,37 @@ import { useSelector, useDispatch } from "react-redux";
 import { SetTargets } from "./Modals/SetTargets";
 import { AddHistoryComp } from "./Modals/AddHistory";
 
-export const ExerciseFooter = ({ user, exercise, handleUpdate, handleUpdateTarget }) => {
+
+import { styled } from '@mui/material/styles';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
+
+
+const CustomTooltipLeft = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))({
+  [`& .${tooltipClasses.tooltip}`]: {
+    marginLeft: 60,
+    fontSize: 12,
+    backgroundColor: "#732065",
+    marginBottom: "20px"
+  },
+});
+
+const CustomTooltipRight = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))({
+  [`& .${tooltipClasses.tooltip}`]: {
+    marginRight: 20,
+    fontSize: 12,
+    backgroundColor: "#732065",
+    marginBottom: "0px"
+  },
+});
+
+export const ExerciseFooter = ({ user, exercise, handleUpdate, handleUpdateTarget, tooltip }) => {
+ 
+  console.log(tooltip)
+ 
   const dispatch = useDispatch();
 
   const location = useLocation();
@@ -51,6 +81,9 @@ export const ExerciseFooter = ({ user, exercise, handleUpdate, handleUpdateTarge
           }}
         ></div>
 
+
+<CustomTooltipLeft arrow title="Add an entry for this exercise" open={tooltip ? true : false} placement="left">
+
         <div
           style={{
             position: "fixed",
@@ -64,6 +97,8 @@ export const ExerciseFooter = ({ user, exercise, handleUpdate, handleUpdateTarge
             backgroundColor: "rgba(35, 53, 89, 0.8)",
           }}
         ></div>
+</CustomTooltipLeft>
+
 
         <AddRoundedIcon
           onClick={handleAddHistory}
@@ -97,6 +132,8 @@ export const ExerciseFooter = ({ user, exercise, handleUpdate, handleUpdateTarge
           }}
         ></div>
 
+<CustomTooltipRight arrow title="Change the target for this exercise" open={tooltip ? true : false} placement="top">
+
         <div
           style={{
             position: "fixed",
@@ -110,6 +147,8 @@ export const ExerciseFooter = ({ user, exercise, handleUpdate, handleUpdateTarge
             backgroundColor: "rgba(35, 53, 89, 0.8)",
           }}
         ></div>
+</CustomTooltipRight> 
+
 
         <AdjustRoundedIcon
           onClick={handleTargets}

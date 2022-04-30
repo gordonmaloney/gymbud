@@ -8,7 +8,23 @@ import { useSelector, useDispatch } from "react-redux";
 import { AddExerciseComp } from "./Modals/AddExercise";
 import { SetTargets } from "./Modals/SetTargets";
 
-export const Footer = () => {
+import { styled } from '@mui/material/styles';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
+
+
+const CustomTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))({
+  [`& .${tooltipClasses.tooltip}`]: {
+    marginLeft: 60,
+    fontSize: 12,
+    backgroundColor: "#732065",
+    marginBottom: "20px"
+  },
+});
+
+
+export const Footer = ({tooltip}) => {
   const dispatch = useDispatch();
 
   const location = useLocation();
@@ -60,10 +76,10 @@ export const Footer = () => {
   } else if (!/exercise/.test(window.location.href)) {
     return (
       <>
-        <div
-          onClick={handleAdd}
-          className="footerLeftTop"
-        ></div>
+        <div onClick={handleAdd} className="footerLeftTop"></div>
+
+
+        <CustomTooltip arrow title="Add your first exercise here!" open={tooltip ? true : false} placement="left" sx={{marginRight: "100px"}}>
 
         <div
           className="footerLeftBottom"
@@ -79,22 +95,23 @@ export const Footer = () => {
             backgroundColor: "rgba(35, 53, 89, 0.55)",
           }}
         ></div>
+        </CustomTooltip>
 
-        <AddRoundedIcon
-          onClick={handleAdd}
-          style={{
-            cursor: "pointer",
-            position: "fixed",
-            overflow: "hide",
-            zIndex: 3,
-            borderRadius: "50%",
-            bottom: "10px",
-            left: "10px",
-            height: "60px",
-            width: "60px",
-            color: "white",
-          }}
-        />
+          <AddRoundedIcon
+            onClick={handleAdd}
+            style={{
+              cursor: "pointer",
+              position: "fixed",
+              overflow: "hide",
+              zIndex: 3,
+              borderRadius: "50%",
+              bottom: "10px",
+              left: "10px",
+              height: "60px",
+              width: "60px",
+              color: "white",
+            }}
+          />
 
         <AddExerciseComp
           user={user}
